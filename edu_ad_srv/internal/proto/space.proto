@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option go_package = "/.;proto";
+
+service Space {
+    // 广告列表
+    rpc GetAllSpaces(SpaceFilterRequest) returns (SpaceListResponse);
+    //    rpc DeleteGoods(DeleteGoodsInfo) returns (google.protobuf.Empty);
+}
+
+message SpaceFilterRequest {
+    int32 pages = 1;
+    int32 page_size = 2;
+}
+
+message SpaceInfoResponse {
+    int32 id = 1;
+    string name = 2;
+    string space_key = 3;
+    BaseProto base_proto = 6;;
+}
+
+message SpaceListResponse {
+    int32 total = 1;
+    repeated SpaceInfoResponse space_list = 3;
+}
+
+message BaseProto {
+    int64 create_time = 1;
+    int64 update_time = 2;
+    int64 delete_time = 3;
+}
