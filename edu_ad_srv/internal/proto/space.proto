@@ -5,7 +5,39 @@ option go_package = "/.;proto";
 service Space {
     // 广告列表
     rpc GetAllSpaces(SpaceFilterRequest) returns (SpaceListResponse);
+    rpc GetAdBySpaceKey(SpaceKeyFilterRequest) returns (AdListResponse);
     //    rpc DeleteGoods(DeleteGoodsInfo) returns (google.protobuf.Empty);
+}
+
+message AdListResponse {
+    repeated SpaceAdInfoListResponse space_ad_info_list_responses = 1;
+}
+
+message SpaceKeyFilterRequest {
+    repeated string space_key = 1;
+}
+
+message SpaceAdInfoListResponse {
+    int32 id = 1;
+    string name = 2;
+    string space_key = 3;
+    BaseProto base_proto = 4;
+    repeated AdInfoResponse space_ad = 5;
+}
+
+message AdInfoResponse {
+    string name = 1;
+    int32 space_id = 2;
+    string keyword = 3;
+    string html_content = 4;
+    string text = 5;
+    string link = 6;
+    int64 start_time = 7;
+    int64 end_time = 8;
+    int32 status = 9;
+    int32 priority = 10;
+    string img = 11;
+    BaseProto base_proto = 12;
 }
 
 message SpaceFilterRequest {
@@ -17,7 +49,7 @@ message SpaceInfoResponse {
     int32 id = 1;
     string name = 2;
     string space_key = 3;
-    BaseProto base_proto = 6;;
+    BaseProto base_proto = 6;
 }
 
 message SpaceListResponse {
