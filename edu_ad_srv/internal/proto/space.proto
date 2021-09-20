@@ -1,28 +1,108 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 option go_package = "/.;proto";
 
 service Space {
-    // 广告列表
-    rpc GetAllSpaces(SpaceFilterRequest) returns (SpaceListResponse);
-    rpc GetAdBySpaceKey(SpaceKeyFilterRequest) returns (AdListResponse);
-    //    rpc DeleteGoods(DeleteGoodsInfo) returns (google.protobuf.Empty);
+    // 根据ID获取广告信息
+    rpc GetAdById(GetAdByIdRequest) returns (AdInfoResponse);
+    // 获取所有的广告信息
+    rpc GetAdList(GetAdListRequest) returns (AdInfoListResponse);
+    //  获取所有广告位及其广告
+    rpc GetAllAds(GetAllAdsRequest) returns (GetAllAdsResponse);
+    //  新增或者修改广告信息
+    rpc AdSaveOrUpdate(AdSaveOrUpdateRequest) returns (google.protobuf.Empty);
+    //  获取所有的广告位
+    rpc GetAllSpaces(GetAllSpacesRequest) returns (SpaceInfoListResponse);
+    //  根据Id获取广告位
+    rpc GetSpaceById(GetSpaceByIdRequest) returns (GetSpaceByIdResponse);
+    //  新增或者修改广告位
+    rpc SpaceSaveOrUpdate(SpaceSaveOrUpdateRequest) returns (google.protobuf.Empty);
+    //  更新广告的状态
+    rpc AdUpdateStatus(AdUpdateStatusRequest) returns (google.protobuf.Empty);
 }
 
-message AdListResponse {
-    repeated SpaceAdInfoListResponse space_ad_info_list_responses = 1;
+message AdUpdateStatusRequest {
+    int32  id = 1;
+    int32 status = 2;
 }
 
-message SpaceKeyFilterRequest {
-    repeated string space_key = 1;
+message SpaceSaveOrUpdateRequest {
+    int32 id = 1;
+    string name = 2;
+    string space_key = 3;
 }
 
-message SpaceAdInfoListResponse {
+message GetSpaceByIdRequest {
+    int32 id = 1;
+}
+
+message GetSpaceByIdResponse {
     int32 id = 1;
     string name = 2;
     string space_key = 3;
     BaseProto base_proto = 4;
-    repeated AdInfoResponse space_ad = 5;
+    // todo 查询广告位的时候是否需要把广告也查询出来
+}
+
+message GetAllSpacesRequest {
+    int32 pages = 1;
+    int32 page_size = 2;
+}
+
+message SpaceInfoListResponse {
+    repeated SpaceInfoResponse space_info_response = 1;
+}
+
+message SpaceInfoResponse {
+    int32 id = 1;
+    string name = 2;
+    string space_key = 3;
+    BaseProto base_proto = 4;
+    // todo 查询广告位的时候是否需要把广告也查询出来
+//    repeated AdInfoResponse ad_info_responses = 5;
+}
+
+message AdSaveOrUpdateRequest {
+    string name = 1;
+    int32 space_id = 2;
+    string keyword = 3;
+    string html_content = 4;
+    string text = 5;
+    string link = 6;
+    int64 start_time = 7;
+    int64 end_time = 8;
+    int32 status = 9;
+    int32 priority = 10;
+    string img = 11;
+    int32 id = 12;
+    BaseProto base_proto = 13;
+}
+
+message GetAllAdsResponse {
+    int32 id = 1;
+    string name = 2;
+    string space_key = 3;
+    BaseProto base_proto = 4;
+    repeated AdInfoResponse ad_info_list_rsp = 5;
+}
+
+message GetAllAdsRequest {
+    string space_key = 1;
+}
+
+message GetAdListRequest {
+    int32 pages = 1;
+    int32 page_size = 2;
+}
+
+message GetAdByIdRequest {
+    int32 id = 1;
+}
+
+message AdInfoListResponse {
+    repeated AdInfoResponse ad_info_responses = 1;
 }
 
 message AdInfoResponse {
@@ -37,24 +117,8 @@ message AdInfoResponse {
     int32 status = 9;
     int32 priority = 10;
     string img = 11;
-    BaseProto base_proto = 12;
-}
-
-message SpaceFilterRequest {
-    int32 pages = 1;
-    int32 page_size = 2;
-}
-
-message SpaceInfoResponse {
-    int32 id = 1;
-    string name = 2;
-    string space_key = 3;
-    BaseProto base_proto = 6;
-}
-
-message SpaceListResponse {
-    int32 total = 1;
-    repeated SpaceInfoResponse space_list = 3;
+    int32 id = 12;
+    BaseProto base_proto = 13;
 }
 
 message BaseProto {
